@@ -1,5 +1,7 @@
 # n8n-cobrancas-inteligentes
 
+![Branch Protection](https://img.shields.io/badge/branch%20protection-active-success)
+
 Automação financeira inteligente com n8n, Google Sheets e Gmail.
 
 ---

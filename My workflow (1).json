@@ -1,148 +1,362 @@
 {
-  "name": "My workflow",
+  "name": "n8n-cobrancas-inteligentes",
   "nodes": [
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "clientes",
-        "responseMode": "responseNode",
-        "options": {}
-      },
-      "id": "02e8d7a1-83b7-40b8-abb1-b8e56c85d246",
-      "name": "Webhook1",
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        96,
-        528
-      ],
-      "webhookId": "assistente-investimentos"
-    },
-    {
-      "parameters": {
-        "fieldToSplitOut": "body.clientes",
-        "options": {}
-      },
-      "id": "59be3440-b8df-4cf1-bb36-ee93b0523ffd",
-      "name": "Split Out1",
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [
-        320,
-        528
-      ]
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Cliente: {{ $json.nome }} | Saldo: {{ $json.saldo }} | Perfil: {{ $json.perfil }}",
-        "options": {
-          "systemMessage": "Você é um assistente financeiro de uma corretora. Opções de investimento disponíveis por perfil:\n- Conservador: Poupança (6,2% a.a., mínimo R$ 100), CDB Liquidez Diária (12,5% a.a., mínimo R$ 1.000), Tesouro Selic (13,0% a.a., mínimo R$ 500)\n- Moderado: CDB Prefixado (14,0% a.a., mínimo R$ 1.000), Fundo Multimercado (16,0% a.a., mínimo R$ 5.000), Tesouro IPCA+ (IPCA+6,0% a.a., mínimo R$ 1.000)\n- Arrojado: Ações ETF (rentabilidade variável, mínimo R$ 500), Fundo de Ações (rentabilidade variável, mínimo R$ 10.000), Criptomoedas (rentabilidade variável, mínimo R$ 100)\n\nCom base no perfil e no saldo do cliente, escolha a opção mais adequada (respeitando o valor mínimo) e escreva uma mensagem de recomendação personalizada, cordial e objetiva, em português do Brasil. Não invente produtos fora da lista acima."
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1,
+              "triggerAtHour": 8
+            }
+          ]
         }
       },
-      "id": "1d53e49a-c8e6-4425-93af-a4712968cf70",
-      "name": "Agente de IA",
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
       "position": [
-        544,
-        528
+        0,
+        500
       ]
     },
     {
       "parameters": {
-        "modelName": "models/gemini-3-flash-preview",
+        "resource": "sheet",
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "SUBSTITUIR_PELO_ID_DA_PLANILHA",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Faturas",
+          "mode": "list"
+        },
         "options": {}
       },
-      "id": "5f730e05-4485-441d-a7fb-87901630a96d",
-      "name": "Modelo de Chat Google Gemini",
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Google Sheets - Ler Faturas",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
       "position": [
-        528,
-        752
+        220,
+        500
       ],
       "credentials": {
-        "googlePalmApi": {
-          "id": "045Msh5Dm9pUP68X",
-          "name": "Google Gemini(PaLM) Api account"
+        "googleSheetsOAuth2Api": {
+          "id": "SUBSTITUIR",
+          "name": "Google Sheets account"
         }
       }
     },
     {
       "parameters": {
-        "respondWith": "text",
-        "responseBody": "={{ $json.output }}",
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "cond-email-1",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+              "operator": {
+                "type": "string",
+                "operation": "regex"
+              }
+            }
+          ]
+        },
         "options": {}
       },
-      "id": "ec8ec740-ce26-4804-935e-ebc7133767f7",
-      "name": "Responder Webhook",
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1,
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Filter - Email valido",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
       "position": [
-        768,
-        528
+        440,
+        500
       ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "cond-cartao-1",
+              "leftValue": "={{ $json.forma_pagamento }}",
+              "rightValue": "cartao_automatico",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "name": "Filter - Sem pagamento automatico",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        660,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "cond-vencida-1",
+              "leftValue": "={{ $json.data_vencimento }}",
+              "rightValue": "={{ $now }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            },
+            {
+              "id": "cond-vencida-2",
+              "leftValue": "={{ $json.status_pagamento }}",
+              "rightValue": "inadimplente",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "name": "Filter - Faturas vencidas",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        880,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-1",
+              "name": "nome_cliente",
+              "type": "string",
+              "value": "={{ $json.nome }}"
+            },
+            {
+              "id": "set-2",
+              "name": "dias_atraso",
+              "type": "number",
+              "value": "={{ Math.floor((Date.now() - new Date($json.data_vencimento).getTime()) / 86400000) }}"
+            },
+            {
+              "id": "set-3",
+              "name": "valor_formatado",
+              "type": "string",
+              "value": "={{ $json.valor_fatura.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0006-4000-8000-000000000006",
+      "name": "Set - Variaveis da mensagem",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1100,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = `<p>Olá, ${$json.nome_cliente},</p><p>Identificamos uma fatura em aberto no valor de <strong>${$json.valor_formatado}</strong>, vencida há ${$json.dias_atraso} dia(s).</p><p>Por favor, regularize o pagamento o quanto antes.</p>`;\nreturn { ...$json, html_corpo: html };"
+      },
+      "id": "a1b2c3d4-0007-4000-8000-000000000007",
+      "name": "Code - Template HTML",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "=Fatura em aberto – {{ $json.nome_cliente }}",
+        "message": "={{ $json.html_corpo }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0008-4000-8000-000000000008",
+      "name": "Gmail - Enviar cobranca",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1540,
+        500
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SUBSTITUIR",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "sheet",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "SUBSTITUIR_PELO_ID_DA_PLANILHA",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Faturas",
+          "mode": "list"
+        },
+        "columnToMatchOn": "email",
+        "valueToMatchOn": "={{ $json.email }}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status_cobranca",
+              "fieldValue": "enviado"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0009-4000-8000-000000000009",
+      "name": "Google Sheets - Marcar enviado",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1760,
+        500
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SUBSTITUIR",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "pinData": {},
   "connections": {
-    "Webhook1": {
+    "Schedule Trigger": {
       "main": [
         [
           {
-            "node": "Split Out1",
+            "node": "Google Sheets - Ler Faturas",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Split Out1": {
+    "Google Sheets - Ler Faturas": {
       "main": [
         [
           {
-            "node": "Agente de IA",
+            "node": "Filter - Email valido",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Agente de IA": {
+    "Filter - Email valido": {
       "main": [
         [
           {
-            "node": "Responder Webhook",
+            "node": "Filter - Sem pagamento automatico",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Modelo de Chat Google Gemini": {
-      "ai_languageModel": [
+    "Filter - Sem pagamento automatico": {
+      "main": [
         [
           {
-            "node": "Agente de IA",
-            "type": "ai_languageModel",
+            "node": "Filter - Faturas vencidas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter - Faturas vencidas": {
+      "main": [
+        [
+          {
+            "node": "Set - Variaveis da mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set - Variaveis da mensagem": {
+      "main": [
+        [
+          {
+            "node": "Code - Template HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Template HTML": {
+      "main": [
+        [
+          {
+            "node": "Gmail - Enviar cobranca",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail - Enviar cobranca": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets - Marcar enviado",
+            "type": "main",
             "index": 0
           }
         ]
       ]
     }
-  },
-  "active": true,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate"
-  },
-  "versionId": "2200a81b-c516-4255-8f5d-92c5c2578d76",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "06f1a58631fafa3fec4b8ced4806514d2f95ac2a3569af0c6206300f1c2b882e"
-  },
-  "nodeGroups": [],
-  "id": "W8ZPHA6pqxCEbWgn",
-  "tags": []
+  }
 }

@@ -1,0 +1,148 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "clientes",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "02e8d7a1-83b7-40b8-abb1-b8e56c85d246",
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        96,
+        528
+      ],
+      "webhookId": "assistente-investimentos"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.clientes",
+        "options": {}
+      },
+      "id": "59be3440-b8df-4cf1-bb36-ee93b0523ffd",
+      "name": "Split Out1",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        320,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Cliente: {{ $json.nome }} | Saldo: {{ $json.saldo }} | Perfil: {{ $json.perfil }}",
+        "options": {
+          "systemMessage": "Você é um assistente financeiro de uma corretora. Opções de investimento disponíveis por perfil:\n- Conservador: Poupança (6,2% a.a., mínimo R$ 100), CDB Liquidez Diária (12,5% a.a., mínimo R$ 1.000), Tesouro Selic (13,0% a.a., mínimo R$ 500)\n- Moderado: CDB Prefixado (14,0% a.a., mínimo R$ 1.000), Fundo Multimercado (16,0% a.a., mínimo R$ 5.000), Tesouro IPCA+ (IPCA+6,0% a.a., mínimo R$ 1.000)\n- Arrojado: Ações ETF (rentabilidade variável, mínimo R$ 500), Fundo de Ações (rentabilidade variável, mínimo R$ 10.000), Criptomoedas (rentabilidade variável, mínimo R$ 100)\n\nCom base no perfil e no saldo do cliente, escolha a opção mais adequada (respeitando o valor mínimo) e escreva uma mensagem de recomendação personalizada, cordial e objetiva, em português do Brasil. Não invente produtos fora da lista acima."
+        }
+      },
+      "id": "1d53e49a-c8e6-4425-93af-a4712968cf70",
+      "name": "Agente de IA",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        544,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3-flash-preview",
+        "options": {}
+      },
+      "id": "5f730e05-4485-441d-a7fb-87901630a96d",
+      "name": "Modelo de Chat Google Gemini",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        528,
+        752
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "045Msh5Dm9pUP68X",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.output }}",
+        "options": {}
+      },
+      "id": "ec8ec740-ce26-4804-935e-ebc7133767f7",
+      "name": "Responder Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        768,
+        528
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Agente de IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente de IA": {
+      "main": [
+        [
+          {
+            "node": "Responder Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Modelo de Chat Google Gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente de IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2200a81b-c516-4255-8f5d-92c5c2578d76",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "06f1a58631fafa3fec4b8ced4806514d2f95ac2a3569af0c6206300f1c2b882e"
+  },
+  "nodeGroups": [],
+  "id": "W8ZPHA6pqxCEbWgn",
+  "tags": []
+}

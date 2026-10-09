@@ -43,6 +43,15 @@ O workflow realiza a leitura das faturas, aplica regras de validação e elegibi
 O processo é executado automaticamente todos os dias às 08:00.
 
 ```text
+
+### Contato
+
+- LinkedIn: [linkedin.com/in/rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
+- GitHub: [github.com/Rafael-TOZATO](https://github.com/Rafael-TOZATO)
+- Medium: [medium.com/@ornelas.tozato](https://medium.com/@ornelas.tozato)
+- Portfólio PWA: [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)
+- Lovable: [aurora-bi-dio.lovable.app](https://aurora-bi-dio.lovable.app)
+
 Schedule Trigger
         ↓
 Google Sheets - Ler Faturas

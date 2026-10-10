@@ -42,30 +42,12 @@ O workflow realiza a leitura das faturas, aplica regras de validação e elegibi
 
 O processo é executado automaticamente todos os dias às 08:00.
 
-```text
+---
 
-### Contato
+## 📬 Contatos
 
-- LinkedIn: [linkedin.com/in/rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
-- GitHub: [github.com/Rafael-TOZATO](https://github.com/Rafael-TOZATO)
-- Medium: [medium.com/@ornelas.tozato](https://medium.com/@ornelas.tozato)
-- Portfólio PWA: [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)
-- Lovable: [aurora-bi-dio.lovable.app](https://aurora-bi-dio.lovable.app)
-
-Schedule Trigger
-        ↓
-Google Sheets - Ler Faturas
-        ↓
-Filter - Email valido
-        ↓
-Filter - Sem pagamento automatico
-        ↓
-Filter - Faturas vencidas
-        ↓
-Set - Variaveis da mensagem
-        ↓
-Code - Template HTML
-        ↓
-Gmail - Enviar cobranca
-        ↓
-Google Sheets - Marcar enviado
+- 💼 **LinkedIn:** [rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
+- 🐙 **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
+- ✍️ **Medium:** [@ornelas.tozato](https://medium.com/@ornelas.tozato)
+- 🌐 **Portfólio PWA:** [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)
+- 🚀 **Aurora BI (Lovable):** [aurora-bi-dio.lovable.app](https://aurora-bi-dio.lovable.app)

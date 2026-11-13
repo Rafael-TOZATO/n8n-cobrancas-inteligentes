@@ -27,8 +27,8 @@ O workflow realiza a leitura das faturas, aplica regras de validação e elegibi
 
 ## 🛠️ Ferramentas e Escopo
 
-- **Público responsável:** Equipe financeira e de atendimento ao cliente.
-- **Ferramentas envolvidas:**
+  **Público responsável:** Equipe financeira e de atendimento ao cliente.
+  **Ferramentas envolvidas:**
   - Google Sheets
   - n8n
   - Gmail API
@@ -43,8 +43,6 @@ Este repositório passou por auditoria e validação estrutural no ambiente de e
 - Configuração correta do runtime do n8n com isolamento de dependências.
 - Importação segura da base local mantendo os fluxos críticos de envio inativos por padrão, prevenindo disparos acidentais ou cobranças duplicadas.
 - Validação de rotas e consistência da estrutura para testes ponta a ponta com dados homologados.
-
----
 
 ## 💻 PROJETOS E PORTFÓLIOS
 - **App Ecosystem:** [tozato-ai-core.vercel.app](https://tozato-ai-core.vercel.app)

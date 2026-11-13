@@ -19,15 +19,11 @@
 
 Automação financeira inteligente com n8n, Google Sheets e Gmail.
 
----
-
 ## 📋 Objetivo do Projeto
 
 Projetar e estruturar um fluxo de trabalho automatizado para o envio de faturas e cobranças vencidas, garantindo confiabilidade, tratamento adequado de exceções e eficiência operacional para a equipe financeira.
 
 O workflow realiza a leitura das faturas, aplica regras de validação e elegibilidade, gera uma mensagem de cobrança em HTML, envia o e-mail ao cliente e registra o envio na planilha.
-
----
 
 ## 🛠️ Ferramentas e Escopo
 
@@ -37,13 +33,9 @@ O workflow realiza a leitura das faturas, aplica regras de validação e elegibi
   - n8n
   - Gmail API
 
----
-
 ## 🔄 Fluxo de Automação
 
 O processo é executado automaticamente todos os dias às 08:00.
-
----
 
 ## ☁️ Homologação e Ambiente Nuvem (Governança 4.0)
 

@@ -242,12 +242,30 @@ A skill fornece orientação e método de trabalho. A execução efetiva depende
 **Rafael Ornelas Tozato**  
 Especialista em Qualidade e P&D | Automação, Governança e Processos
 
-- GitHub: [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
-- Repositório: [n8n-cobrancas-inteligentes](https://github.com/Rafael-TOZATO/n8n-cobrancas-inteligentes)
-- LinkedIn: [rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
-- Medium: [ornelas.tozato](https://medium.com/@ornelas.tozato)
-- E-mail: [ornelas.tozato@gmail.com](mailto:ornelas.tozato@gmail.com)
+## 📬 CONTATOS E PERFIS
 
----
+💻 **PROJECTS & PORTFOLIOS**
+* **App Ecosystem / Dev Hub:**<br>https://tozato-ai-core.vercel.app
+* **H-Folio Professional:**<br>https://h-folio-I0.vercel.app
+
+🧩 **AGENSI.IO**
+* **Creator:**<br>https://www.agensi.io/creators/rafael-ornelas-tozato
+
+🐙 **CODES & REPOSITORIES**
+* **GitHub:**<br>https://github.com/Rafael-TOZATO
+
+✍️ **ARTICLES & PUBLICATIONS**
+* **Medium:**<br>https://medium.com/@ornelas.tozato
+* **DEV Community:**<br>https://dev.to/rafaeltozato
+
+🪟 **MICROSOFT LEARN**
+* **Perfil:**<br>https://learn.microsoft.com/pt-br/users/rafaelornelastozato-2209
+
+💼 **LINKEDIN**
+* **Perfil Profissional:**<br>https://www.linkedin.com/in/rafaeltozato81
+
+📬 **CONTACT**
+* **E-mail:**<br>ornelas.tozato@gmail.com
+  
 
 <p align="center"><strong>Cobranças Inteligentes</strong><br>Automação financeira com qualidade, rastreabilidade e governança.</p>
